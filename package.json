@@ -1,0 +1,19 @@
+{
+  "name": "pdfpilotdev",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "omnimate",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.7.0",
+    "nodemon": "^3.1.14"
+  }
+}
