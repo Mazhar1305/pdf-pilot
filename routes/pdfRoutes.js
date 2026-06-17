@@ -1,13 +1,14 @@
-const express = require("express");
+import express from "express";
+
 const router = express.Router();
 
-const pdfController = require("../controllers/pdfController");
-const upload = require("../middleware/uploadMiddleware");
+import { mergePDFs } from "../controllers/pdfController.js";
+import upload from "../middleware/uploadMiddleware.js";
 
 router.post(
   "/merge",
   upload.array("files", 20),
-  pdfController.mergePDFs
+  mergePDFs
 );
 
-module.exports = router;
+export default router;

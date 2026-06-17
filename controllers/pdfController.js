@@ -1,10 +1,10 @@
-const PDFMerger = require("pdf-merger-js");
-const path = require("path");
+import PDFMerger from "pdf-merger-js";
+import path from "path";
 
-const File = require("../models/File");
-const Job = require("../models/Job");
+import File from "../models/File.js";
+import Job from "../models/Job.js";
 
-exports.mergePDFs = async (req, res) => {
+export const mergePDFs = async (req, res) => {
   let job;
 
   try {
