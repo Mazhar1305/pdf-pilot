@@ -5,6 +5,7 @@ dotenv.config();
 import connectDB from "./config/db.js";
 import healthRoutes from "./routes/healthRoutes.js";
 import pdfRoutes from "./routes/pdfRoutes.js";
+import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
 
@@ -15,6 +16,8 @@ connectDB();
 
 app.use("/", healthRoutes);
 app.use("/api/pdf", pdfRoutes);
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
