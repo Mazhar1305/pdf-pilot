@@ -4,7 +4,7 @@ dotenv.config();
 
 import connectDB from "./config/db.js";
 import healthRoutes from "./routes/healthRoutes.js";
-import pdfRoutes from "./routes/pdfRoutes.js";
+import pdfRoutes from "./routes/Split_Extract_Routes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();

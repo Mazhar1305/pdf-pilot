@@ -3,7 +3,7 @@ import { uploadPdf } from "../middleware/uploadMiddleware.js";
 import {
   splitPdf,
   extractPages
-} from "../controllers/pdfController.js";
+} from "../controllers/Split_Extract_Controller.js";
 
 const router = express.Router();
 
