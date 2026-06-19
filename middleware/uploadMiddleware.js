@@ -24,8 +24,10 @@ const upload = multer({
   storage,
   fileFilter,
   limits: {
-    fileSize: 50 * 1024 * 1024, 
+    fileSize: 50 * 1024 * 1024,
   },
 });
 
 export const uploadPdf = upload.single("pdf");
+
+export default upload;

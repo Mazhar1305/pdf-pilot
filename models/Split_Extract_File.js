@@ -28,13 +28,13 @@ const fileSchema = new mongoose.Schema(
     },
     jobId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Job",
+      ref: "SplitExtractJob",
       required: true,
     },
   },
   { timestamps: true }
 );
 
-const File = mongoose.model("File", fileSchema);
+const File = mongoose.model("SplitExtractFile", fileSchema);
 
 export default File;

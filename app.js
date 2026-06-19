@@ -4,23 +4,19 @@ dotenv.config();
 
 import connectDB from "./config/db.js";
 import healthRoutes from "./routes/healthRoutes.js";
-import Split_Extract_Routes from "./routes/Split_Extract_Routes.js";
-import { errorHandler } from "./middleware/errorMiddleware.js";
+import splitExtractRoutes from "./routes/Split_Extract_Routes.js";
 import pdfRoutes from "./routes/pdfRoutes.js";
-
-dotenv.config();
+import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
 
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
-console.log(process.env.MONGODB_URI);
 connectDB();
 
-app.use("/uploads", express.static("uploads"));
-
 app.use("/", healthRoutes);
+app.use("/api/pdf", splitExtractRoutes);
 app.use("/api/pdf", pdfRoutes);
 
 app.use(errorHandler);

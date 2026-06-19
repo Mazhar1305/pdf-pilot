@@ -22,7 +22,7 @@ const jobSchema = new mongoose.Schema(
     outputFiles: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "File",
+        ref: "SplitExtractFile",
       },
     ],
     error: {
@@ -33,6 +33,6 @@ const jobSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Job = mongoose.model("Job", jobSchema);
+const Job = mongoose.model("SplitExtractJob", jobSchema);
 
 export default Job;
