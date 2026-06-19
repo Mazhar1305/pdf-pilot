@@ -4,7 +4,7 @@ dotenv.config();
 
 import connectDB from "./config/db.js";
 import healthRoutes from "./routes/healthRoutes.js";
-import pdfRoutes from "./routes/pdfRoutes.js";
+import extractRoutes from "./routes/extractRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -15,7 +15,7 @@ app.use("/uploads", express.static("uploads"));
 connectDB();
 
 app.use("/", healthRoutes);
-app.use("/api/pdf", pdfRoutes);
+app.use("/api/pdf", extractRoutes);
 
 app.use(errorHandler);
 

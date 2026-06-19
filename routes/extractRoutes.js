@@ -1,13 +1,8 @@
 import express from "express";
 import { uploadPdf } from "../middleware/uploadMiddleware.js";
-import {
-  splitPdf,
-  extractPages
-} from "../controllers/pdfController.js";
+import { extractPages } from "../controllers/extractController.js";
 
 const router = express.Router();
-
-router.post("/split", uploadPdf, splitPdf);
 
 router.post(
   "/extract-pages",
