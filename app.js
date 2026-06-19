@@ -4,6 +4,7 @@ dotenv.config()
 
 import connectDB from "./config/db.js";
 import healthRoutes from "./routes/healthRoutes.js";
+import pdfRoutes from "./routes/pdfRoutes.js";
 
 dotenv.config();
 
@@ -11,9 +12,14 @@ const app = express();
 
 app.use(express.json());
 
+console.log(process.env.MONGODB_URI);
 connectDB();
 
+app.use("/uploads", express.static("uploads"));
+
 app.use("/", healthRoutes);
+app.use("/api/pdf", pdfRoutes);
+
 
 const PORT = process.env.PORT || 5000;
 
