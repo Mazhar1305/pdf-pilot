@@ -2,8 +2,8 @@ import fs from "fs";
 import path from "path";
 import { PDFDocument } from "pdf-lib";
 import { v4 as uuidv4 } from "uuid";
-import Job from "../models/Job.js";
-import File from "../models/File.js";
+import Job from "../models/Split_Extract_Job.js";
+import File from "../models/Split_Extract_File.js";
 
 const parsePageRange = (rangeStr, totalPages) => {
   const pages = new Set();
