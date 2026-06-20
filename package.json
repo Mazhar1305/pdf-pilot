@@ -11,15 +11,17 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "ghostscript-node": "^1.5.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.3.0",
     "mongoose": "^9.7.0",
     "multer": "^2.2.0",
     "nodemon": "^3.1.14",
     "pdf-lib": "^1.17.1",
-    "uuid": "^14.0.0",
-    "mongodb": "^7.3.0",
-    "pdf-merger-js": "^5.1.2"
+    "pdf-merger-js": "^5.1.2",
+    "uuid": "^14.0.0"
   }
 }

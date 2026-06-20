@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import authRoutes from "./routes/authRoutes.js";
 dotenv.config();
 
 import connectDB from "./config/db.js";
@@ -18,6 +19,7 @@ connectDB();
 app.use("/", healthRoutes);
 app.use("/api/pdf", splitExtractRoutes);
 app.use("/api/pdf", pdfRoutes);
+app.use("/api/auth", authRoutes);
 
 app.use(errorHandler);
 
