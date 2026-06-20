@@ -7,6 +7,7 @@ import healthRoutes from "./routes/healthRoutes.js";
 import splitExtractRoutes from "./routes/Split_Extract_Routes.js";
 import pdfRoutes from "./routes/pdfRoutes.js";
 import rotateRoutes from "./routes/rotateRoutes.js";
+import organizeRoutes from "./routes/organizeRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -20,6 +21,7 @@ app.use("/", healthRoutes);
 app.use("/api/pdf", splitExtractRoutes);
 app.use("/api/pdf", pdfRoutes);
 app.use("/api/pdf", rotateRoutes);
+app.use("/api/pdf", organizeRoutes);
 
 app.use(errorHandler);
 
