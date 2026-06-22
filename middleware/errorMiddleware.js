@@ -8,9 +8,15 @@ export const errorHandler = (err, req, res, next) => {
     return res.status(400).json({ error: `Upload error: ${err.message}` });
   }
 
-  if (err && err.message === "Only PDF files are accepted") {
-    return res.status(400).json({ error: err.message });
-  }
+  if (
+  err &&
+  (
+    err.message === "Only PDF files are accepted" ||
+    err.message === "Only PPTX files are accepted"
+  )
+) {
+  return res.status(400).json({ error: err.message });
+}
 
   if (err) {
     console.error("Unhandled error:", err);

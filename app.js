@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
+import convertRoutes from "./routes/convertRoutes.js";
 dotenv.config();
 
 import connectDB from "./config/db.js";
@@ -24,6 +25,7 @@ app.use("/api/pdf", pdfRoutes);
 app.use("/api/pdf", rotateRoutes);
 app.use("/api/pdf", organizeRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/convert", convertRoutes);
 
 app.use(errorHandler);
 
