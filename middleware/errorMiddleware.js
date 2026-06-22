@@ -17,6 +17,13 @@ export const errorHandler = (err, req, res, next) => {
 ) {
   return res.status(400).json({ error: err.message });
 }
+    err &&
+    (err.message === "Only PDF files are accepted" ||
+      err.message === "Only Word documents (.docx) are accepted" ||
+      err.message === "Only Excel documents (.xlsx) are accepted")
+  ) {
+    return res.status(400).json({ error: err.message });
+  }
 
   if (err) {
     console.error("Unhandled error:", err);
