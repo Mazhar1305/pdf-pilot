@@ -8,7 +8,12 @@ export const errorHandler = (err, req, res, next) => {
     return res.status(400).json({ error: `Upload error: ${err.message}` });
   }
 
-  if (err && err.message === "Only PDF files are accepted") {
+  if (
+    err &&
+    (err.message === "Only PDF files are accepted" ||
+      err.message === "Only Word documents (.docx) are accepted" ||
+      err.message === "Only Excel documents (.xlsx) are accepted")
+  ) {
     return res.status(400).json({ error: err.message });
   }
 
