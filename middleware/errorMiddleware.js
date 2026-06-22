@@ -9,6 +9,14 @@ export const errorHandler = (err, req, res, next) => {
   }
 
   if (
+  err &&
+  (
+    err.message === "Only PDF files are accepted" ||
+    err.message === "Only PPTX files are accepted"
+  )
+) {
+  return res.status(400).json({ error: err.message });
+}
     err &&
     (err.message === "Only PDF files are accepted" ||
       err.message === "Only Word documents (.docx) are accepted" ||
