@@ -15,7 +15,8 @@ export const errorHandler = (err, req, res, next) => {
     err.message === "Only PPTX files are accepted" ||
     err.message === "Only JPG/JPEG files are accepted" ||
     err.message === "Only Word documents (.docx) are accepted" ||
-    err.message === "Only Excel documents (.xlsx) are accepted"
+    err.message === "Only Excel documents (.xlsx) are accepted" ||
+    err.message === "Only PNG files are accepted"
   )
 ) {
   return res.status(400).json({ error: err.message });

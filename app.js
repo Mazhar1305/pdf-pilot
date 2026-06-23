@@ -14,6 +14,7 @@ import ocrRoutes from "./routes/ocrRoutes.js";
 import wordToPdfRoutes from "./routes/wordToPdfRoutes.js";
 import excelToPdfRoutes from "./routes/excelToPdfRoutes.js";
 import jpgToPdfRoutes from "./routes/jpgToPdfRoutes.js";
+import pngToPdfRoutes from "./routes/pngToPdfRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -34,6 +35,7 @@ app.use("/api", excelToPdfRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/convert", convertRoutes);
 app.use("/api/convert", jpgToPdfRoutes);
+app.use("/api/convert", pngToPdfRoutes);
 
 app.use(errorHandler);
 
