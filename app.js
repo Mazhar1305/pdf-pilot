@@ -12,6 +12,7 @@ import organizeRoutes from "./routes/organizeRoutes.js";
 import ocrRoutes from "./routes/ocrRoutes.js";
 import wordToPdfRoutes from "./routes/wordToPdfRoutes.js";
 import excelToPdfRoutes from "./routes/excelToPdfRoutes.js";
+import htmlToPdfRoutes from "./routes/htmlToPdfRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -29,6 +30,7 @@ app.use("/api/pdf", organizeRoutes);
 app.use("/api/pdf", ocrRoutes);
 app.use("/api", wordToPdfRoutes);
 app.use("/api", excelToPdfRoutes);
+app.use("/api", htmlToPdfRoutes);
 app.use("/api/auth", authRoutes);
 
 app.use(errorHandler);
