@@ -17,6 +17,7 @@ import jpgToPdfRoutes from "./routes/jpgToPdfRoutes.js";
 import pngToPdfRoutes from "./routes/pngToPdfRoutes.js";
 import pdfToWordRoutes from "./routes/pdfToWordRoutes.js";
 import pdfToExcelRoutes from "./routes/pdfToExcelRoutes.js";
+import pdfToPptRoutes from "./routes/pdfToPptRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -40,6 +41,7 @@ app.use("/api/convert", jpgToPdfRoutes);
 app.use("/api/convert", pngToPdfRoutes);
 app.use("/api/convert", pdfToWordRoutes);
 app.use("/api/convert", pdfToExcelRoutes);
+app.use("/api/convert", pdfToPptRoutes);
 
 app.use(errorHandler);
 

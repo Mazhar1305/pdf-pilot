@@ -26,6 +26,7 @@
     "pdf-merger-js": "^5.1.2",
     "pdf-to-img": "^6.2.0",
     "pdfjs-dist": "^6.0.227",
+    "pptxgenjs": "^4.0.1",
     "tesseract.js": "^7.0.0",
     "uuid": "^14.0.0"
   }
