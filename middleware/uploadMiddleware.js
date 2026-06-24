@@ -9,11 +9,13 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     const uniqueName = `${uuidv4()}${path.extname(file.originalname)}`;
     cb(null, uniqueName);
-  },
+  }
 });
 
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "application/pdf") {
+  const ext = path.extname(file.originalname).toLowerCase();
+
+  if (ext === ".pdf") {
     cb(null, true);
   } else {
     cb(new Error("Only PDF files are accepted"), false);
@@ -24,10 +26,8 @@ const upload = multer({
   storage,
   fileFilter,
   limits: {
-    fileSize: 50 * 1024 * 1024,
-  },
+    fileSize: 50 * 1024 * 1024
+  }
 });
-
-export const uploadPdf = upload.single("pdf");
 
 export default upload;

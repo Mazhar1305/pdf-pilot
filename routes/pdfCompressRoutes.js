@@ -1,13 +1,16 @@
 import express from "express";
 import upload from "../middleware/uploadMiddleware.js";
-import { repairPDF } from "../controllers/pdfRepairController.js";
+
+import {
+    compressPdf
+} from "../controllers/pdfCompressController.js";
 
 const router = express.Router();
 
 router.post(
-    "/repair",
+    "/compress",
     upload.single("file"),
-    repairPDF
+    compressPdf
 );
 
 export default router;
