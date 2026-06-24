@@ -1,6 +1,7 @@
-const repairService = require("../services/pdfRepairService");
+import { repairPDF as repairPdfService } from "../services/pdfRepairService.js";
 
-exports.repairPDF = async (req, res) => {
+export const repairPDF = async (req, res) => {
+
     try {
 
         if (!req.file) {
@@ -22,7 +23,7 @@ exports.repairPDF = async (req, res) => {
         }
 
         const repairedBuffer =
-            await repairService.repairPDF(req.file.buffer);
+            await repairPdfService(req.file.buffer);
 
         res.setHeader(
             "Content-Type",
@@ -36,7 +37,9 @@ exports.repairPDF = async (req, res) => {
 
         return res.send(Buffer.from(repairedBuffer));
 
-    } catch (err) {
+    }
+
+    catch (err) {
 
         return res.status(422).json({
             message: "Unable to repair PDF",
@@ -44,4 +47,5 @@ exports.repairPDF = async (req, res) => {
         });
 
     }
+
 };

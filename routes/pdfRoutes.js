@@ -1,28 +1,13 @@
-const express = require('express');
+import express from "express";
+import upload from "../middleware/uploadMiddleware.js";
+import { repairPDF } from "../controllers/pdfRepairController.js";
 
 const router = express.Router();
-
-const upload = require('../middlewares/upload');
-
-const controller =
-require('../controllers/pdfRepairController');
-
-
-router.post(
-
-'/repair',
-
-upload.single('file'),
-
-controller.repairPDF
-
-);
 
 router.post(
     "/repair",
     upload.single("file"),
-    pdfRepairController.repairPDF
+    repairPDF
 );
 
-
-module.exports = router;
+export default router;

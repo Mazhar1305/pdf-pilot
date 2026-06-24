@@ -1,7 +1,8 @@
-const { PDFDocument } = require("pdf-lib");
+import { PDFDocument } from "pdf-lib";
 
-async function repairPDF(buffer) {
+export async function repairPDF(buffer) {
     try {
+
         const pdf = await PDFDocument.load(buffer, {
             ignoreEncryption: true
         });
@@ -16,9 +17,14 @@ async function repairPDF(buffer) {
         pages.forEach(page => repaired.addPage(page));
 
         return await repaired.save();
-    } catch (err) {
-        throw new Error("PDF is corrupted and cannot be repaired");
+
+    }
+
+    catch (err) {
+
+        throw new Error(
+            "PDF is corrupted and cannot be repaired"
+        );
+
     }
 }
-
-module.exports = { repairPDF };

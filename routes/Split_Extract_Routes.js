@@ -1,5 +1,5 @@
 import express from "express";
-import { uploadPdf } from "../middleware/uploadMiddleware.js";
+import upload from "../middleware/uploadMiddleware.js";
 import {
   splitPdf,
   extractPages
@@ -7,11 +7,11 @@ import {
 
 const router = express.Router();
 
-router.post("/split", uploadPdf, splitPdf);
+router.post("/split", upload.single("pdf"), splitPdf);
 
 router.post(
   "/extract-pages",
-  uploadPdf,
+  upload.single("pdf"),
   extractPages
 );
 
