@@ -1,14 +1,28 @@
-import express from "express";
+const express = require('express');
 
 const router = express.Router();
 
-import { mergePDFs } from "../controllers/pdfController.js";
-import upload from "../middleware/uploadMiddleware.js";
+const upload = require('../middlewares/upload');
+
+const controller =
+require('../controllers/pdfRepairController');
+
 
 router.post(
-  "/merge",
-  upload.array("files", 20),
-  mergePDFs
+
+'/repair',
+
+upload.single('file'),
+
+controller.repairPDF
+
 );
 
-export default router;
+router.post(
+    "/repair",
+    upload.single("file"),
+    pdfRepairController.repairPDF
+);
+
+
+module.exports = router;

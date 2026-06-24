@@ -27,6 +27,13 @@ const upload = multer({
     fileSize: 50 * 1024 * 1024,
   },
 });
+const multer = require("multer");
+
+const storage = multer.memoryStorage();
+
+module.exports = multer({
+    storage
+});
 
 export const uploadPdf = upload.single("pdf");
 
