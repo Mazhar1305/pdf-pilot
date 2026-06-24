@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
+import convertRoutes from "./routes/convertRoutes.js";
 dotenv.config();
 
 import connectDB from "./config/db.js";
@@ -14,6 +15,8 @@ import wordToPdfRoutes from "./routes/wordToPdfRoutes.js";
 import excelToPdfRoutes from "./routes/excelToPdfRoutes.js";
 import htmlToPdfRoutes from "./routes/htmlToPdfRoutes.js";
 import removePagesRoutes from "./routes/removePagesRoutes.js";
+import jpgToPdfRoutes from "./routes/jpgToPdfRoutes.js";
+import pngToPdfRoutes from "./routes/pngToPdfRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -34,6 +37,9 @@ app.use("/api", wordToPdfRoutes);
 app.use("/api", excelToPdfRoutes);
 app.use("/api", htmlToPdfRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/convert", convertRoutes);
+app.use("/api/convert", jpgToPdfRoutes);
+app.use("/api/convert", pngToPdfRoutes);
 
 app.use(errorHandler);
 
