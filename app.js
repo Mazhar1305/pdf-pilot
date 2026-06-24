@@ -22,6 +22,7 @@ import pdfToWordRoutes from "./routes/pdfToWordRoutes.js";
 import pdfToExcelRoutes from "./routes/pdfToExcelRoutes.js";
 import pdfToPptRoutes from "./routes/pdfToPptRoutes.js";
 import pdfWatermarkRoutes from "./routes/pdfWatermarkRoutes.js";
+import pdfCropRoutes from "./routes/pdfCropRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -50,6 +51,7 @@ app.use("/api/convert", pdfToExcelRoutes);
 app.use("/api/convert", pdfToPptRoutes);
 app.use("/api/pdf",pdfCompressRoutes);
 app.use("/api/pdf", pdfWatermarkRoutes);
+app.use("/api/pdf", pdfCropRoutes);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
