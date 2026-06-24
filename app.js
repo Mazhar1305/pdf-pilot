@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import convertRoutes from "./routes/convertRoutes.js";
+import pdfCompressRoutes from "./routes/pdfCompressRoutes.js";
 dotenv.config();
 
 import connectDB from "./config/db.js";
@@ -46,6 +47,7 @@ app.use("/api/convert", pngToPdfRoutes);
 app.use("/api/convert", pdfToWordRoutes);
 app.use("/api/convert", pdfToExcelRoutes);
 app.use("/api/convert", pdfToPptRoutes);
+app.use("/api/pdf",pdfCompressRoutes);
 
 app.use(errorHandler);
 
