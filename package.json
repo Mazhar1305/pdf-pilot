@@ -27,7 +27,7 @@
     "pdf-to-img": "^6.2.0",
     "pdfjs-dist": "^6.0.227",
     "pptxgenjs": "^4.0.1",
-    "puppeteer": "^25.2.0",
+    "puppeteer": "^25.2.1",
     "tesseract.js": "^7.0.0",
     "uuid": "^14.0.0"
   }
