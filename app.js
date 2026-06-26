@@ -25,6 +25,7 @@ import pdfWatermarkRoutes from "./routes/pdfWatermarkRoutes.js";
 import pdfCropRoutes from "./routes/pdfCropRoutes.js";
 import pdfEditRoutes from "./routes/pdfEditRoutes.js";
 import pdfRedactRoutes from "./routes/pdfRedactRoutes.js";
+import pdfCompareRoutes from "./routes/pdfCompareRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -56,6 +57,7 @@ app.use("/api/pdf", pdfWatermarkRoutes);
 app.use("/api/pdf", pdfCropRoutes);
 app.use("/api/pdf", pdfEditRoutes);
 app.use("/api/pdf", pdfRedactRoutes);
+app.use("/api/pdf", pdfCompareRoutes);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
