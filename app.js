@@ -26,6 +26,7 @@ import pdfCropRoutes from "./routes/pdfCropRoutes.js";
 import pdfEditRoutes from "./routes/pdfEditRoutes.js";
 import pdfRedactRoutes from "./routes/pdfRedactRoutes.js";
 import pdfCompareRoutes from "./routes/pdfCompareRoutes.js";
+import protectRoutes from "./routes/protectRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -42,6 +43,7 @@ app.use("/api/pdf", rotateRoutes);
 app.use("/api/pdf", organizeRoutes);
 app.use("/api/pdf", ocrRoutes);
 app.use("/api/pdf", removePagesRoutes);
+app.use("/api/pdf", protectRoutes);
 app.use("/api", wordToPdfRoutes);
 app.use("/api", excelToPdfRoutes);
 app.use("/api", htmlToPdfRoutes);
