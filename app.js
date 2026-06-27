@@ -24,6 +24,7 @@ import pdfToPptRoutes from "./routes/pdfToPptRoutes.js";
 import pdfWatermarkRoutes from "./routes/pdfWatermarkRoutes.js";
 import pdfCropRoutes from "./routes/pdfCropRoutes.js";
 import pdfEditRoutes from "./routes/pdfEditRoutes.js";
+import pdfToJpgRoutes from "./routes/pdfToJpgRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -50,6 +51,7 @@ app.use("/api/convert", pngToPdfRoutes);
 app.use("/api/convert", pdfToWordRoutes);
 app.use("/api/convert", pdfToExcelRoutes);
 app.use("/api/convert", pdfToPptRoutes);
+app.use("/api/convert", pdfToJpgRoutes);
 app.use("/api/pdf",pdfCompressRoutes);
 app.use("/api/pdf", pdfWatermarkRoutes);
 app.use("/api/pdf", pdfCropRoutes);
