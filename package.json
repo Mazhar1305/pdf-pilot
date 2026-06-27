@@ -11,6 +11,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "@pdfsmaller/pdf-decrypt": "^1.0.1",
     "@pdfsmaller/pdf-encrypt": "^1.0.2",
     "bcryptjs": "^3.0.3",
     "docx": "^9.7.1",
