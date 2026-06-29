@@ -34,6 +34,7 @@ import pdfPageNumbersRoutes from "./routes/pdfPageNumbersRoutes.js";
 import aiChatRoutes from "./routes/aiChatRoutes.js";
 import summarizeRoutes from "./routes/summarizeRoutes.js";
 import explainRoutes from "./routes/explainRoutes.js";
+import translateRoutes from "./routes/translateRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -74,6 +75,7 @@ app.use("/api/pdf", pdfPageNumbersRoutes);
 app.use("/api/ai", aiChatRoutes);
 app.use("/api/ai", summarizeRoutes);
 app.use("/api/ai", explainRoutes);
+app.use("/api/ai", translateRoutes);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
