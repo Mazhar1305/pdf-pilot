@@ -5,7 +5,7 @@ import { pdf } from "pdf-to-img";
 import { promises as fs } from "node:fs";
 import path from "path";
 
-export const pdfToJpg = async (req, res) => {
+export const pdfTopng = async (req, res) => {
   let job = null;
 
   try {

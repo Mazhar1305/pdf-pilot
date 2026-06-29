@@ -1,14 +1,14 @@
 import express from "express";
 
-import { pdfToJpg } from "../controllers/pdfToJpgController.js";
+import { pdfTopng } from "../controllers/pdfTopngController.js";
 import upload from "../middleware/pdfUploadMiddleware.js";
 
 const router = express.Router();
 
 router.post(
-  "/pdf-to-jpg",
+  "/pdf-to-png",
   upload.single("file"),
-  pdfToJpg
+  pdfTopng
 );
 
 export default router;
