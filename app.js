@@ -33,6 +33,7 @@ import unlockRoutes from "./routes/unlockRoutes.js";
 import signRoutes from "./routes/signRoutes.js";
 import pdfPageNumbersRoutes from "./routes/pdfPageNumbersRoutes.js";
 import aiChatRoutes from "./routes/aiChatRoutes.js";
+import aiExtractRoutes from "./routes/aiExtractRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -72,6 +73,7 @@ app.use("/api/pdf", pdfRedactRoutes);
 app.use("/api/pdf", pdfCompareRoutes);
 app.use("/api/pdf", pdfPageNumbersRoutes);
 app.use("/api/ai", aiChatRoutes);
+app.use("/api/ai", aiExtractRoutes);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

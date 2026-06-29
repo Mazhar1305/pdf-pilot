@@ -22,6 +22,7 @@
     "ghostscript-node": "^1.5.0",
     "jsonwebtoken": "^9.0.3",
     "mammoth": "^1.12.0",
+    "mime": "^4.1.0",
     "mongodb": "^7.4.0",
     "mongoose": "^9.7.0",
     "multer": "^2.2.0",
