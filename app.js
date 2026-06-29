@@ -33,6 +33,9 @@ import unlockRoutes from "./routes/unlockRoutes.js";
 import signRoutes from "./routes/signRoutes.js";
 import pdfPageNumbersRoutes from "./routes/pdfPageNumbersRoutes.js";
 import aiChatRoutes from "./routes/aiChatRoutes.js";
+import summarizeRoutes from "./routes/summarizeRoutes.js";
+import explainRoutes from "./routes/explainRoutes.js";
+import translateRoutes from "./routes/translateRoutes.js";
 import aiExtractRoutes from "./routes/aiExtractRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
@@ -73,6 +76,9 @@ app.use("/api/pdf", pdfRedactRoutes);
 app.use("/api/pdf", pdfCompareRoutes);
 app.use("/api/pdf", pdfPageNumbersRoutes);
 app.use("/api/ai", aiChatRoutes);
+app.use("/api/ai", summarizeRoutes);
+app.use("/api/ai", explainRoutes);
+app.use("/api/ai", translateRoutes);
 app.use("/api/ai", aiExtractRoutes);
 app.use(errorHandler);
 
