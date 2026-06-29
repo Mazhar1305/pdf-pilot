@@ -4,8 +4,9 @@ import Job from "../models/Job.js";
 import { pdf } from "pdf-to-img";
 import { promises as fs } from "node:fs";
 import path from "path";
+import sharp from "sharp";
 
-export const pdfTopng = async (req, res) => {
+export const pdfToJpg = async (req, res) => {
   let job = null;
 
   try {
@@ -27,7 +28,7 @@ export const pdfTopng = async (req, res) => {
 
     // Create Job record
     job = await Job.create({
-      tool: "pdf-to-png",
+      tool: "pdf-to-jpg",
       status: "processing",
     });
 
@@ -40,11 +41,15 @@ export const pdfTopng = async (req, res) => {
     let page = 1;
 
     for await (const image of document) {
-      const imageName = `${path.parse(req.file.filename).name}-page-${page}.png`;
+      const imageName = `${path.parse(req.file.filename).name}-page-${page}.jpg`;
 
       const imagePath = path.join(outputDir, imageName);
 
-      await fs.writeFile(imagePath, image);
+      await sharp(image)
+        .jpeg({
+            quality: 100,
+        })
+        .toFile(imagePath);
 
       imageUrls.push(
         `http://localhost:${process.env.PORT}/uploads/output/${imageName}`
@@ -58,15 +63,15 @@ export const pdfTopng = async (req, res) => {
 
     // Update job status
     await Job.findByIdAndUpdate(job._id, {
-      status: "completed",
+      status: "done",
     });
 
     // Return image URLs
     return res.status(200).json({
       success: true,
       jobId: job._id,
-      status: "completed",
-      images: imageUrls,
+      status: "done",
+      downloadUrls: imageUrls,
     });
   } catch (error) {
     if (job) {
