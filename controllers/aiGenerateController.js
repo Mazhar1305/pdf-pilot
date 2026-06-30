@@ -31,12 +31,14 @@ export const generateDocument = async (req, res) => {
       });
 
     }
-
+    console.log("Logged in user:", req.user);
     job = await Job.create({
 
       tool: "generate",
 
-      status: "processing"
+      status: "processing",
+
+      user: req.user?._id || null
 
     });
 

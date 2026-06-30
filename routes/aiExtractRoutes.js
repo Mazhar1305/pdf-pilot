@@ -1,6 +1,7 @@
 import express from "express";
 
 import upload from "../middleware/documentImageUploadMiddleware.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 import {
   extractDocumentData
@@ -10,6 +11,7 @@ const router = express.Router();
 
 router.post(
   "/extract",
+  protect,
   upload.single("document"),
   extractDocumentData
 );
