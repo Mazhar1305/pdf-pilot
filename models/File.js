@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const fileSchema = new mongoose.Schema(
   {
+    fileId: {
+      type: String,
+      unique: true,
+      sparse: true
+    },
     originalName: String,
     fileName: String,
     path: String,
