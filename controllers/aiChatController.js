@@ -63,7 +63,8 @@ export const documentChat = async (req, res) => {
       );
 
       const pdf = await pdfjsLib.getDocument({
-        data
+        data,
+        disableWorker: true
       }).promise;
 
       let text = "";

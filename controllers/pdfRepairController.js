@@ -1,6 +1,9 @@
+import fs from "fs";
 import { repairPDF as repairPdfService } from "../services/pdfRepairService.js";
 
 export const repairPDF = async (req, res) => {
+
+    let inputPath = null;
 
     try {
 
@@ -22,8 +25,13 @@ export const repairPDF = async (req, res) => {
             });
         }
 
+        // The upload middleware uses disk storage, so read the bytes from
+        // disk (req.file.buffer is only populated by memory storage).
+        inputPath = req.file.path;
+        const inputBuffer = fs.readFileSync(inputPath);
+
         const repairedBuffer =
-            await repairPdfService(req.file.buffer);
+            await repairPdfService(inputBuffer);
 
         res.setHeader(
             "Content-Type",
@@ -45,6 +53,18 @@ export const repairPDF = async (req, res) => {
             message: "Unable to repair PDF",
             error: err.message
         });
+
+    }
+
+    finally {
+
+        if (inputPath && fs.existsSync(inputPath)) {
+            try {
+                fs.unlinkSync(inputPath);
+            } catch (unlinkErr) {
+                console.error("Could not unlink source PDF file:", unlinkErr);
+            }
+        }
 
     }
 

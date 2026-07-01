@@ -14,7 +14,8 @@ async function extractPdf(filePath) {
 
   const pdf =
     await pdfjsLib.getDocument({
-      data
+      data,
+      disableWorker: true
     }).promise;
 
   const pages = [];

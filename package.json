@@ -30,7 +30,7 @@
     "pdf-lib": "^1.17.1",
     "pdf-merger-js": "^5.1.2",
     "pdf-to-img": "^6.2.0",
-    "pdfjs-dist": "^6.0.227",
+    "pdfjs-dist": "^5.6.205",
     "pptxgenjs": "^4.0.1",
     "puppeteer": "^25.2.1",
     "sharp": "^0.35.2",
