@@ -1,7 +1,6 @@
 import "dotenv/config";
 
 import fs from "fs";
-import path from "path";
 import mime from "mime";
 
 import { GoogleGenAI } from "@google/genai";
@@ -45,7 +44,9 @@ export const extractDocumentData = async (req, res) => {
 
       tool: "extract",
 
-      status: "processing"
+      status: "processing",
+
+      user: req.user?._id || null
 
     });
 
@@ -110,7 +111,8 @@ If a field is unavailable, return null.
         .trim();
 
     let json;
-        try {
+
+    try {
 
       json = JSON.parse(extracted);
 

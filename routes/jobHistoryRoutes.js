@@ -1,17 +1,14 @@
 import express from "express";
 
 import { protect } from "../middleware/authMiddleware.js";
-
-import {
-  generateDocument
-} from "../controllers/aiGenerateController.js";
+import { getJobHistory } from "../controllers/jobHistoryController.js";
 
 const router = express.Router();
 
-router.post(
-  "/generate",
+router.get(
+  "/jobs",
   protect,
-  generateDocument
+  getJobHistory
 );
 
 export default router;

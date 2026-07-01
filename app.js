@@ -40,6 +40,8 @@ import aiExtractRoutes from "./routes/aiExtractRoutes.js";
 import aiGenerateRoutes from "./routes/aiGenerateRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import downloadRoutes from "./routes/downloadRoutes.js";
+import jobRoutes from "./routes/jobRoutes.js";
+import jobHistoryRoutes from "./routes/jobHistoryRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -86,6 +88,8 @@ app.use("/api/ai", aiExtractRoutes);
 app.use("/api/ai", aiGenerateRoutes);
 app.use("/api/files", uploadRoutes);
 app.use("/api/files", downloadRoutes);
+app.use("/api", jobRoutes);
+app.use("/api", jobHistoryRoutes);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

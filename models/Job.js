@@ -11,7 +11,13 @@ const jobSchema = new mongoose.Schema(
       enum: ["processing", "done", "error"],
       default: "processing"
     },
-    outputFile: String
+    outputFile: String,
+
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null
+    }
   },
   {
     timestamps: true

@@ -40,12 +40,14 @@ export const documentChat = async (req, res) => {
       fileName: req.file.filename,
       path: req.file.path,
       mimeType: req.file.mimetype,
-      size: req.file.size
+      size: req.file.size,
+      user: req.user?._id || null
     });
 
     job = await Job.create({
       tool: "chat",
-      status: "processing"
+      status: "processing",
+      user: req.user?._id || null
     });
 
     let extractedText = "";
