@@ -42,6 +42,7 @@ import uploadRoutes from "./routes/uploadRoutes.js";
 import downloadRoutes from "./routes/downloadRoutes.js";
 import jobRoutes from "./routes/jobRoutes.js";
 import jobHistoryRoutes from "./routes/jobHistoryRoutes.js";
+import plansRoutes from "./routes/plansRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -90,6 +91,7 @@ app.use("/api/files", uploadRoutes);
 app.use("/api/files", downloadRoutes);
 app.use("/api", jobRoutes);
 app.use("/api", jobHistoryRoutes);
+app.use("/api/plans", plansRoutes);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
