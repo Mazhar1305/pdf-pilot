@@ -35,7 +35,8 @@ export const pdfToPpt = async (req, res) => {
     );
 
     const pdf = await pdfjsLib.getDocument({
-      data
+      data,
+      disableWorker: true
     }).promise;
 
     const pptx = new PptxGenJS();

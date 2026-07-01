@@ -1,14 +1,16 @@
 import fs from "fs";
 import path from "path";
-import { exec } from "child_process";
-import util from "util";
+import mammoth from "mammoth";
 import { v4 as uuidv4 } from "uuid";
 
 import File from "../models/File.js";
 import WordToPdf from "../models/WordToPdfModel.js";
+import { htmlToPdfBuffer } from "../services/htmlToPdfService.js";
 
-const execPromise = util.promisify(exec);
-
+// Cross-platform DOCX -> PDF:
+//   mammoth converts the .docx to HTML, then headless Chromium renders it to PDF.
+// This replaces the previous Microsoft Word COM automation, which was
+// Windows-only and unsupported for unattended/server use.
 export const convertWordToPdf = async (req, res) => {
   let job = null;
   let inputPath = null;
@@ -31,16 +33,13 @@ export const convertWordToPdf = async (req, res) => {
       return res.status(400).json({ error: "Uploaded file is not a valid DOCX file" });
     }
 
-    // Create WordToPdf state record
     job = await WordToPdf.create({
       status: "pending",
       inputFile: req.file.originalname
     });
-
     job.status = "processing";
     await job.save();
 
-    // Log the file details in File model
     await File.create({
       originalName: req.file.originalname,
       fileName: req.file.filename,
@@ -51,29 +50,33 @@ export const convertWordToPdf = async (req, res) => {
 
     const outputFileName = `conv-${Date.now()}-${uuidv4()}.pdf`;
     const outputPath = path.resolve("uploads", "output", outputFileName);
-
-    // Make sure output folder exists
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
-    // PowerShell script to automate Microsoft Word COM
-    const psScript = [
-      `$word = New-Object -ComObject Word.Application;`,
-      `$word.Visible = $false;`,
-      `$doc = $word.Documents.Open('${inputPath}');`,
-      `$doc.SaveAs('${outputPath}', 17);`, // 17 is wdFormatPDF
-      `$doc.Close();`,
-      `$word.Quit();`
-    ].join(" ");
+    // 1. DOCX -> HTML
+    const { value: bodyHtml } = await mammoth.convertToHtml({ path: inputPath });
 
-    // Execute PowerShell subprocess
-    await execPromise(`powershell -NoProfile -Command "${psScript}"`);
+    // 2. Wrap in a printable document
+    const html = `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body { font-family: Arial, Helvetica, sans-serif; font-size: 12pt; line-height: 1.5; color: #111; }
+      table { border-collapse: collapse; width: 100%; }
+      td, th { border: 1px solid #999; padding: 4px 8px; }
+      img { max-width: 100%; }
+    </style>
+  </head>
+  <body>${bodyHtml}</body>
+</html>`;
 
-    // Verify output file was successfully generated
-    if (!fs.existsSync(outputPath)) {
-      throw new Error("PowerShell script completed but PDF was not generated");
-    }
+    // 3. HTML -> PDF
+    const pdfBuffer = await htmlToPdfBuffer(html);
+    fs.writeFileSync(outputPath, pdfBuffer);
 
-    // Update job status to done
+    // Clean up the uploaded source file
+    if (fs.existsSync(inputPath)) fs.unlinkSync(inputPath);
+
     job.status = "done";
     job.outputFile = outputFileName;
     await job.save();
@@ -87,7 +90,6 @@ export const convertWordToPdf = async (req, res) => {
   } catch (error) {
     console.error("convertWordToPdf error:", error);
 
-    // Clean up uploaded file if it still exists
     if (inputPath && fs.existsSync(inputPath)) {
       try {
         fs.unlinkSync(inputPath);

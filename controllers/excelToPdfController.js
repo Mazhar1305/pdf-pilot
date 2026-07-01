@@ -1,14 +1,36 @@
 import fs from "fs";
 import path from "path";
-import { exec } from "child_process";
-import util from "util";
+import ExcelJS from "exceljs";
 import { v4 as uuidv4 } from "uuid";
 
 import File from "../models/File.js";
 import Job from "../models/Job.js";
+import { htmlToPdfBuffer } from "../services/htmlToPdfService.js";
 
-const execPromise = util.promisify(exec);
+const escapeHtml = (v) =>
+  String(v)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 
+// Render a cell value (handles ExcelJS rich text / formula / date objects).
+const cellText = (value) => {
+  if (value === null || value === undefined) return "";
+  if (value instanceof Date) return value.toLocaleDateString();
+  if (typeof value === "object") {
+    if (value.text) return value.text;
+    if (value.result !== undefined) return value.result;
+    if (Array.isArray(value.richText)) return value.richText.map((r) => r.text).join("");
+    if (value.hyperlink) return value.hyperlink;
+    return "";
+  }
+  return value;
+};
+
+// Cross-platform XLSX -> PDF:
+//   ExcelJS reads the workbook and renders each sheet as an HTML table, then
+//   headless Chromium renders the HTML to PDF. Replaces the previous Microsoft
+//   Excel COM automation (Windows-only, unsupported for server use).
 export const convertExcelToPdf = async (req, res) => {
   let job = null;
   let inputPath = null;
@@ -31,13 +53,8 @@ export const convertExcelToPdf = async (req, res) => {
       return res.status(400).json({ error: "Uploaded file is not a valid XLSX file" });
     }
 
-    // Create Job record with tool: "excel-to-pdf"
-    job = await Job.create({
-      tool: "excel-to-pdf",
-      status: "processing"
-    });
+    job = await Job.create({ tool: "excel-to-pdf", status: "processing" });
 
-    // Save uploaded file details in the File model
     await File.create({
       originalName: req.file.originalname,
       fileName: req.file.filename,
@@ -48,38 +65,55 @@ export const convertExcelToPdf = async (req, res) => {
 
     const outputFileName = `excel-conv-${Date.now()}-${uuidv4()}.pdf`;
     const outputPath = path.resolve("uploads", "output", outputFileName);
-
-    // Make sure output folder exists
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
-    // PowerShell script to automate Microsoft Excel COM
-    const psScript = [
-      `$excel = New-Object -ComObject Excel.Application;`,
-      `$excel.Visible = $false;`,
-      `$excel.DisplayAlerts = $false;`,
-      `$workbook = $excel.Workbooks.Open('${inputPath}');`,
-      `$workbook.ExportAsFixedFormat(0, '${outputPath}');`, // 0 represents xlTypePDF
-      `$workbook.Close($false);`,
-      `$excel.Quit();`
-    ].join(" ");
+    // 1. Read workbook
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(inputPath);
 
-    // Execute PowerShell subprocess
-    await execPromise(`powershell -NoProfile -Command "${psScript}"`);
+    // 2. Build an HTML table per worksheet
+    let sheetsHtml = "";
+    workbook.eachSheet((sheet) => {
+      let rows = "";
+      sheet.eachRow({ includeEmpty: false }, (row) => {
+        let cells = "";
+        // row.values is 1-based; index 0 is unused
+        const values = row.values.slice(1);
+        for (const v of values) {
+          cells += `<td>${escapeHtml(cellText(v))}</td>`;
+        }
+        rows += `<tr>${cells}</tr>`;
+      });
+      sheetsHtml += `<h2>${escapeHtml(sheet.name)}</h2><table>${rows}</table>`;
+    });
 
-    // Verify output file was successfully generated
-    if (!fs.existsSync(outputPath)) {
-      throw new Error("PowerShell script completed but PDF was not generated");
+    if (!sheetsHtml) {
+      sheetsHtml = "<p>(workbook contains no data)</p>";
     }
 
-    // Update job status to done
+    const html = `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; color: #111; }
+      h2 { font-size: 12pt; margin: 12px 0 6px; }
+      table { border-collapse: collapse; margin-bottom: 18px; }
+      td, th { border: 1px solid #999; padding: 3px 8px; white-space: nowrap; }
+    </style>
+  </head>
+  <body>${sheetsHtml}</body>
+</html>`;
+
+    // 3. HTML -> PDF (landscape suits wide spreadsheets)
+    const pdfBuffer = await htmlToPdfBuffer(html, { landscape: true });
+    fs.writeFileSync(outputPath, pdfBuffer);
+
+    if (fs.existsSync(inputPath)) fs.unlinkSync(inputPath);
+
     job.status = "done";
     job.outputFile = outputFileName;
     await job.save();
-
-    // Clean up/unlink the uploaded Excel file
-    if (fs.existsSync(inputPath)) {
-      fs.unlinkSync(inputPath);
-    }
 
     return res.status(200).json({
       jobId: job._id,
@@ -90,7 +124,6 @@ export const convertExcelToPdf = async (req, res) => {
   } catch (error) {
     console.error("convertExcelToPdf error:", error);
 
-    // Clean up uploaded file if it still exists
     if (inputPath && fs.existsSync(inputPath)) {
       try {
         fs.unlinkSync(inputPath);

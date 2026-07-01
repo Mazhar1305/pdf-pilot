@@ -34,7 +34,7 @@ export const summarizeDocument = async (req, res) => {
 
     if (extension === ".pdf") {
       const data = new Uint8Array(fs.readFileSync(inputPath));
-      const pdf = await pdfjsLib.getDocument({ data }).promise;
+      const pdf = await pdfjsLib.getDocument({ data, disableWorker: true }).promise;
       let text = "";
       for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
